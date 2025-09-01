@@ -8,6 +8,8 @@ export const ERROR_MESSAGES = {
   PARSING_EXTENSIONS_FAILED: "Failed to parse file extensions",
 } as const;
 
+export const LAST_SELECTED_APP_KEY = "last-selected-app";
+
 export const SUCCESS_MESSAGES = {
   DEFAULT_EDITOR_SET: "Default application set successfully",
 } as const;

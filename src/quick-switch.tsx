@@ -8,20 +8,20 @@ import {
   getPreferenceValues,
   open,
   openExtensionPreferences,
+  LocalStorage,
   Clipboard,
 } from "@raycast/api";
-import { useCachedState } from "@raycast/utils";
 import { useState, useEffect } from "react";
 import { App, Preferences } from "./types";
 import { AppManager } from "./services/app-manager";
-import { DefaultEditorService } from "./services/default-editor";
+import { DefaultApplicationService } from "./services/default-application";
 import { IconMapper } from "./utils/icon-mapper";
-import { DEFAULT_FILE_EXTENSIONS } from "./constants";
+import { DEFAULT_FILE_EXTENSIONS, LAST_SELECTED_APP_KEY } from "./constants";
 
 export default function Command() {
   const preferences = getPreferenceValues<Preferences>();
   const [apps, setApps] = useState<App[]>([]);
-  const [lastSelectedApp, setLastSelectedApp] = useCachedState<string>("last-selected-app", "");
+  const [lastSelectedApp, setLastSelectedApp] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -35,11 +35,18 @@ export default function Command() {
     };
 
     loadApps();
+    // load last selected app from storage
+    LocalStorage.getItem<string>(LAST_SELECTED_APP_KEY).then((value) => {
+      if (value) {
+        setLastSelectedApp(value);
+      }
+    });
   }, []);
 
   const handleOpenApp = async (app: App) => {
     try {
       await open(app.path);
+      await LocalStorage.setItem(LAST_SELECTED_APP_KEY, app.name);
       setLastSelectedApp(app.name);
     } catch {
       await showToast({
@@ -68,7 +75,7 @@ export default function Command() {
       message: `Configuring ${app.name} for file associations`,
     });
 
-    const result = await DefaultEditorService.setAsDefaultApplication(app.bundleId, fileExtensions);
+    const result = await DefaultApplicationService.setAsDefaultApplication(app.bundleId, fileExtensions);
 
     await showToast({
       style: result.success ? Toast.Style.Success : Toast.Style.Failure,

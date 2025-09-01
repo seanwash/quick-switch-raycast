@@ -20,6 +20,10 @@ I often use keybinds like `hyper + c` to jump to specific applications, but I al
 
 Using the extension will show you the list of apps that you've configured. You can select one of them to switch to it. The next time you use the keybind, the previously selected app will be at the top of the list. That's it!
 
+### Switch to Last App
+
+Use the `Switch to Last App` command to quickly open the last selected app. You can assign it a keyboard shortcut under **Extensions > Quick Switch > Commands** in Raycast preferences.
+
 ### Configuring the extension
 
 The extension can be configured via the extension preferences. The `cmd + shift + ,` shortcut can be used to open the preferences directly.

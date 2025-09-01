@@ -12,6 +12,12 @@
       "title": "Quick Switch",
       "description": "Quickly switch between your configured apps",
       "mode": "view"
+    },
+    {
+      "name": "switch-last",
+      "title": "Switch to Last App",
+      "description": "Switch to the last used app",
+      "mode": "no-view"
     }
   ],
   "preferences": [
