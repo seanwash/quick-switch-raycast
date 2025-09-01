@@ -1,4 +1,14 @@
-import { ActionPanel, Action, Icon, List, Toast, showToast, getPreferenceValues, open } from "@raycast/api";
+import {
+  ActionPanel,
+  Action,
+  Icon,
+  List,
+  Toast,
+  showToast,
+  getPreferenceValues,
+  open,
+  openExtensionPreferences,
+} from "@raycast/api";
 import { useCachedState } from "@raycast/utils";
 import { useState, useEffect } from "react";
 
@@ -59,7 +69,7 @@ export default function Command() {
     };
 
     loadApps();
-  }, [preferences]);
+  }, []);
 
   const handleOpenApp = async (app: App) => {
     try {
@@ -114,6 +124,16 @@ export default function Command() {
           icon={Icon.ExclamationMark}
           title="No Apps Configured"
           description="Add apps in the extension preferences to get started"
+          actions={
+            <ActionPanel>
+              <Action
+                title="Open Preferences"
+                icon={Icon.Gear}
+                onAction={openExtensionPreferences}
+                shortcut={{ modifiers: ["cmd", "shift"], key: "," }}
+              />
+            </ActionPanel>
+          }
         />
       ) : (
         sortedApps.map((app) => (
@@ -130,6 +150,12 @@ export default function Command() {
                   title="Copy Path"
                   content={app.path}
                   shortcut={{ modifiers: ["cmd"], key: "c" }}
+                />
+                <Action
+                  title="Open Preferences"
+                  icon={Icon.Gear}
+                  onAction={openExtensionPreferences}
+                  shortcut={{ modifiers: ["cmd", "shift"], key: "," }}
                 />
               </ActionPanel>
             }
