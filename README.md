@@ -9,6 +9,8 @@ I often use keybinds like `hyper + c` to jump to specific applications, but I al
 ## Installation & setup
 
 * [Install the extension](https://developers.raycast.com/basics/contribute-to-an-extension)
+  * Clone the repository
+  * From that directory run `npm install` and `npm run dev`. The extension should automatically open
 * Configure the apps you want to switch between in the extension settings via the extension preferences
 * Configure the extension's keybind
 
