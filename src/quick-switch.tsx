@@ -43,7 +43,6 @@ export default function Command() {
       try {
         const appsArray: App[] = [];
 
-        // Collect all configured apps
         const appsList = [preferences.app1, preferences.app2, preferences.app3, preferences.app4, preferences.app5];
 
         appsList.forEach((app, index) => {
@@ -79,7 +78,7 @@ export default function Command() {
       await showToast({
         style: Toast.Style.Failure,
         title: "Failed to Open App",
-        message: `Could not open ${app.name}. Check if the path is correct.`,
+        message: `Could not open ${app.name}.`,
       });
     }
   };
@@ -89,25 +88,11 @@ export default function Command() {
       return app.icon;
     }
 
-    // Use actual app icon from the application path
     if (app.path) {
       return { fileIcon: app.path };
     }
 
-    // Fallback to default icons based on app name
-    const name = app.name.toLowerCase();
-    if (name.includes("vscode") || name.includes("visual studio code")) {
-      return Icon.Code;
-    } else if (name.includes("sublime")) {
-      return Icon.Text;
-    } else if (name.includes("vim") || name.includes("nvim")) {
-      return Icon.Terminal;
-    } else if (name.includes("atom")) {
-      return Icon.Circle;
-    } else if (name.includes("webstorm") || name.includes("intellij")) {
-      return Icon.Gear;
-    }
-    return Icon.Document;
+    return Icon.Code;
   };
 
   const sortedApps = [...apps].sort((a, b) => {
@@ -146,11 +131,6 @@ export default function Command() {
             actions={
               <ActionPanel>
                 <Action title={`Open ${app.name}`} icon={Icon.ArrowRight} onAction={() => handleOpenApp(app)} />
-                <Action.CopyToClipboard
-                  title="Copy Path"
-                  content={app.path}
-                  shortcut={{ modifiers: ["cmd"], key: "c" }}
-                />
                 <Action
                   title="Open Preferences"
                   icon={Icon.Gear}
