@@ -49,6 +49,14 @@
       "required": false,
       "title": "App 5",
       "description": "Fifth app"
+    },
+    {
+      "name": "fileExtensions",
+      "type": "textfield",
+      "required": false,
+      "title": "File Extensions for Default Editor",
+      "description": "Comma-separated list of file extensions (e.g., .js,.py,.md)",
+      "default": ".js,.ts,.tsx,.jsx,.py,.rb,.go,.rs,.swift,.java,.cpp,.c,.h,.html,.css,.scss,.json,.yaml,.yml,.md,.txt"
     }
   ],
   "dependencies": {

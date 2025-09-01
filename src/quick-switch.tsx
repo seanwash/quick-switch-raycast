@@ -8,29 +8,15 @@ import {
   getPreferenceValues,
   open,
   openExtensionPreferences,
+  Clipboard,
 } from "@raycast/api";
 import { useCachedState } from "@raycast/utils";
 import { useState, useEffect } from "react";
-
-interface App {
-  name: string;
-  path: string;
-  icon?: string;
-}
-
-interface AppPickerValue {
-  path: string;
-  name: string;
-  bundleId: string;
-}
-
-interface Preferences {
-  app1?: AppPickerValue;
-  app2?: AppPickerValue;
-  app3?: AppPickerValue;
-  app4?: AppPickerValue;
-  app5?: AppPickerValue;
-}
+import { App, Preferences } from "./types";
+import { AppManager } from "./services/app-manager";
+import { DefaultEditorService } from "./services/default-editor";
+import { IconMapper } from "./utils/icon-mapper";
+import { DEFAULT_FILE_EXTENSIONS } from "./constants";
 
 export default function Command() {
   const preferences = getPreferenceValues<Preferences>();
@@ -41,27 +27,8 @@ export default function Command() {
   useEffect(() => {
     const loadApps = async () => {
       try {
-        const appsArray: App[] = [];
-
-        const appsList = [preferences.app1, preferences.app2, preferences.app3, preferences.app4, preferences.app5];
-
-        appsList.forEach((app, index) => {
-          if (app && app.path) {
-            appsArray.push({
-              name: app.name || `App ${index + 1}`,
-              path: app.path,
-            });
-          }
-        });
-
-        setApps(appsArray);
-      } catch {
-        await showToast({
-          style: Toast.Style.Failure,
-          title: "Error Loading Apps",
-          message: "Failed to load app preferences",
-        });
-        setApps([]);
+        const configuredApps = await AppManager.getConfiguredApps(preferences);
+        setApps(configuredApps);
       } finally {
         setIsLoading(false);
       }
@@ -83,24 +50,34 @@ export default function Command() {
     }
   };
 
-  const getAppIcon = (app: App) => {
-    if (app.icon) {
-      return app.icon;
+  const handleSetAsDefaultEditor = async (app: App) => {
+    if (!app.bundleId) {
+      await showToast({
+        style: Toast.Style.Failure,
+        title: "Cannot Set Default Editor",
+        message: "App bundle ID not available",
+      });
+      return;
     }
 
-    if (app.path) {
-      return { fileIcon: app.path };
-    }
+    const fileExtensions = preferences.fileExtensions || DEFAULT_FILE_EXTENSIONS;
 
-    return Icon.Code;
+    await showToast({
+      style: Toast.Style.Animated,
+      title: "Setting Default Editor...",
+      message: `Configuring ${app.name} for file associations`,
+    });
+
+    const result = await DefaultEditorService.setAsDefaultEditor(app.bundleId, fileExtensions);
+
+    await showToast({
+      style: result.success ? Toast.Style.Success : Toast.Style.Failure,
+      title: result.success ? "Success" : "Failed",
+      message: result.message,
+    });
   };
 
-  const sortedApps = [...apps].sort((a, b) => {
-    // Show last selected app first
-    if (a.name === lastSelectedApp) return -1;
-    if (b.name === lastSelectedApp) return 1;
-    return a.name.localeCompare(b.name);
-  });
+  const sortedApps = AppManager.sortApps(apps, lastSelectedApp);
 
   return (
     <List isLoading={isLoading} searchBarPlaceholder="Search apps...">
@@ -124,13 +101,32 @@ export default function Command() {
         sortedApps.map((app) => (
           <List.Item
             key={app.name}
-            icon={getAppIcon(app)}
+            icon={IconMapper.getAppIcon(app)}
             title={app.name}
             subtitle={app.path}
             accessories={[...(app.name === lastSelectedApp ? [{ icon: Icon.Star, tooltip: "Last used" }] : [])]}
             actions={
               <ActionPanel>
                 <Action title={`Open ${app.name}`} icon={Icon.ArrowRight} onAction={() => handleOpenApp(app)} />
+                <Action
+                  title="Set as Default Editor"
+                  icon={Icon.Document}
+                  onAction={() => handleSetAsDefaultEditor(app)}
+                  shortcut={{ modifiers: ["cmd"], key: "d" }}
+                />
+                <Action
+                  title="Copy App Path"
+                  icon={Icon.CopyClipboard}
+                  onAction={async () => {
+                    await Clipboard.copy(app.path);
+                    await showToast({
+                      style: Toast.Style.Success,
+                      title: "Copied",
+                      message: "App path copied to clipboard",
+                    });
+                  }}
+                  shortcut={{ modifiers: ["cmd"], key: "c" }}
+                />
                 <Action
                   title="Open Preferences"
                   icon={Icon.Gear}
