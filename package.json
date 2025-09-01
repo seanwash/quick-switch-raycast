@@ -1,0 +1,74 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "quick-switch",
+  "title": "Quick Switch",
+  "description": "Quickly switch between your configured apps",
+  "icon": "extension-icon.png",
+  "author": "seanwashbot",
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "quick-switch",
+      "title": "Quick Switch",
+      "description": "Quickly switch between your configured apps",
+      "mode": "view"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "app1",
+      "type": "appPicker",
+      "required": false,
+      "title": "App 1",
+      "description": "First app"
+    },
+    {
+      "name": "app2",
+      "type": "appPicker",
+      "required": false,
+      "title": "App 2", 
+      "description": "Second app"
+    },
+    {
+      "name": "app3",
+      "type": "appPicker",
+      "required": false,
+      "title": "App 3",
+      "description": "Third app"
+    },
+    {
+      "name": "app4",
+      "type": "appPicker",
+      "required": false,
+      "title": "App 4",
+      "description": "Fourth app"
+    },
+    {
+      "name": "app5",
+      "type": "appPicker",
+      "required": false,
+      "title": "App 5",
+      "description": "Fifth app"
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.102.6",
+    "@raycast/utils": "^1.17.0"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "^2.0.4",
+    "@types/node": "22.13.10",
+    "@types/react": "19.0.10",
+    "eslint": "^9.22.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2"
+  },
+  "scripts": {
+    "build": "ray build",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "prepublishOnly": "echo \"\\n\\nIt seems like you are trying to publish the Raycast extension to npm.\\n\\nIf you did intend to publish it to npm, remove the \\`prepublishOnly\\` script and rerun \\`npm publish\\` again.\\nIf you wanted to publish it to the Raycast Store instead, use \\`npm run publish\\` instead.\\n\\n\" && exit 1",
+    "publish": "npx @raycast/api@latest publish"
+  }
+}
