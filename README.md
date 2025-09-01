@@ -2,6 +2,8 @@
 
 Quick switch is a simple Raycast extension that allows you to switch between a configurable set of apps quickly.
 
+![quick-switch-preview.png](assets/quick-switch-preview.png)
+
 I often use keybinds like `hyper + c` to jump to specific applications, but I also like to rotate between different editors. This meant that I would have to update Raycast's settings, or my Karabiner Elements config to change the keybinds. This extension allows me to quickly switch between editors without having to change keybinds every time my preferred editor changes.
 
 ## Installation & setup
