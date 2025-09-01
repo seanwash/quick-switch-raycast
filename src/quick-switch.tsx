@@ -50,11 +50,11 @@ export default function Command() {
     }
   };
 
-  const handleSetAsDefaultEditor = async (app: App) => {
+  const handleSetAsDefaultApplication = async (app: App) => {
     if (!app.bundleId) {
       await showToast({
         style: Toast.Style.Failure,
-        title: "Cannot Set Default Editor",
+        title: "Cannot Set Default Application",
         message: "App bundle ID not available",
       });
       return;
@@ -64,11 +64,11 @@ export default function Command() {
 
     await showToast({
       style: Toast.Style.Animated,
-      title: "Setting Default Editor...",
+      title: "Setting Default Application…",
       message: `Configuring ${app.name} for file associations`,
     });
 
-    const result = await DefaultEditorService.setAsDefaultEditor(app.bundleId, fileExtensions);
+    const result = await DefaultEditorService.setAsDefaultApplication(app.bundleId, fileExtensions);
 
     await showToast({
       style: result.success ? Toast.Style.Success : Toast.Style.Failure,
@@ -109,9 +109,9 @@ export default function Command() {
               <ActionPanel>
                 <Action title={`Open ${app.name}`} icon={Icon.ArrowRight} onAction={() => handleOpenApp(app)} />
                 <Action
-                  title="Set as Default Editor"
+                  title="Set as Default Application"
                   icon={Icon.Document}
-                  onAction={() => handleSetAsDefaultEditor(app)}
+                  onAction={() => handleSetAsDefaultApplication(app)}
                   shortcut={{ modifiers: ["cmd"], key: "d" }}
                 />
                 <Action

@@ -7,9 +7,9 @@ import { FileExtensionParser } from "../utils/file-extensions";
 
 const execAsync = promisify(exec);
 
-export class DefaultEditorService {
-  static async setAsDefaultEditor(bundleId: string, extensionsString: string): Promise<DefaultEditorResult> {
-    if (!bundleId || typeof bundleId !== "string") {
+export class DefaultApplicationService {
+  static async setAsDefaultApplication(bundleId: string, extensionsString: string): Promise<DefaultEditorResult> {
+    if (!bundleId) {
       return {
         success: false,
         message: ERROR_MESSAGES.INVALID_BUNDLE_ID,

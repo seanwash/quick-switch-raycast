@@ -54,7 +54,7 @@
       "name": "fileExtensions",
       "type": "textfield",
       "required": false,
-      "title": "File Extensions for Default Editor",
+      "title": "File Extensions for Default Application",
       "description": "Comma-separated list of file extensions (e.g., .js,.py,.md)",
       "default": ".js,.ts,.tsx,.jsx,.py,.rb,.go,.rs,.swift,.java,.cpp,.c,.h,.html,.css,.scss,.json,.yaml,.yml,.md,.txt"
     }
